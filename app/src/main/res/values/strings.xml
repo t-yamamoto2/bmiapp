@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">BMIapp</string>
-    <string name="nyuryoku">入力</string>
+    <string name="app_name">bmiapp</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="history">履歴</string>
 </resources>

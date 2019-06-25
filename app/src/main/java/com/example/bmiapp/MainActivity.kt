@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         pager.adapter = TabAdapter(supportFragmentManager, this)
-        tabLayout.setup
+        tabLayout.setupWithViewPager(pager)
     }
 
 }
