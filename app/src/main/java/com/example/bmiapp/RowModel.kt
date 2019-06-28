@@ -4,6 +4,6 @@ import android.widget.Toast
 import java.util.*
 
 class RowModel {
-    var title: String = ""
-    var detail: String = ""
+    val title: String = ""
+    val detail: String = ""
 }
