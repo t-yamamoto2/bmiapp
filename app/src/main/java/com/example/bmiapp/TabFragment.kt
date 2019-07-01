@@ -11,16 +11,20 @@ import android.widget.TextView
 import android.widget.Toast
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.support.v7.widget.RecyclerView
 import java.text.SimpleDateFormat
 import com.squareup.moshi.*
+import kotlinx.android.synthetic.main.fragment_history.*
 import java.util.*
 import java.util.List
+import android.support.v7.widget.LinearLayoutManager
+
+
 
 
 val moshi = Moshi.Builder().build()
 val type = Types.newParameterizedType(List::class.java,PersonalDataModel::class.java)
 val listAdapter:JsonAdapter<List<PersonalDataModel>> = moshi.adapter(type)
-val objectAdapter = moshi.adapter(PersonalDataModel::class.java)
 class TabMainFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -104,6 +108,24 @@ class TabMainFragment: Fragment() {
 }
 class TabHistryFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_history, container, false)
+        super.onCreateView(inflater, container, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_main, container, false)
+        val rv : RecyclerView = view.findViewById(R.id.recycler_view)
+
+        val dataStore: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context)
+        val savedData = dataStore.getString("History", "[]")
+        val savedDataList : List<PersonalDataModel>  = listAdapter.fromJson(savedData) as  List<PersonalDataModel>
+
+        val adapter = ViewAdapter(savedDataList)
+
+        val llm = LinearLayoutManager(this.context)
+
+        rv.setHasFixedSize(true);
+
+        rv.setLayoutManager(llm);
+
+        rv.setAdapter(adapter);
+
+        return view
     }
 }

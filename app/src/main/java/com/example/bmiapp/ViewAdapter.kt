@@ -5,9 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import java.util.List
 
 
-class ViewAdapter(private val list: List<RowModel>, private val listener: ListListener) : RecyclerView.Adapter<ViewHolder>() {
+class ViewAdapter(private val list: List<PersonalDataModel>) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         Log.d("Adapter", "onCreateViewHolder")
@@ -17,11 +18,11 @@ class ViewAdapter(private val list: List<RowModel>, private val listener: ListLi
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d("Adapter", "onBindViewHolder")
-        holder.titleView.text = list[position].title
-        holder.detailView.text = list[position].detail
-        holder.itemView.setOnClickListener {
-            listener.onClickRow(it, list[position])
-        }
+        holder.titleView.text = list[position].date
+        holder.detailView.text = list[position].bmi
+//        holder.itemView.setOnClickListener {
+//            listener.onClickRow(it, list[position])
+//        }
     }
 
     override fun getItemCount(): Int {
@@ -30,6 +31,8 @@ class ViewAdapter(private val list: List<RowModel>, private val listener: ListLi
     }
 
     interface ListListener {
-        fun onClickRow(tappedView: View, rowModel: RowModel)
+        fun onClickRow(tappedView: View, rowModel: PersonalDataModel){
+
+        }
     }
 }
