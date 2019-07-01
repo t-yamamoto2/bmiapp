@@ -9,12 +9,18 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import java.util.*
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import java.text.SimpleDateFormat
+import com.squareup.moshi.*
+import java.util.*
+import java.util.List
 
 
+val moshi = Moshi.Builder().build()
+val type = Types.newParameterizedType(List::class.java,PersonalDataModel::class.java)
+val listAdapter:JsonAdapter<List<PersonalDataModel>> = moshi.adapter(type)
+val objectAdapter = moshi.adapter(PersonalDataModel::class.java)
 class TabMainFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -62,24 +68,21 @@ class TabMainFragment: Fragment() {
         saveBtn.setOnClickListener {
             val dataStore: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context)
             val editor = dataStore.edit()
-            val today = SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS").format(Date())
+            val day = SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS").format(Date())
 
             val heightCmDbl = toDoubleOrNegative(heightCmView.text.toString())
             val weightKgDbl = toDoubleOrNegative(weightKgView.text.toString())
-            val personalData = PersonalDataModel(today,heightCmView.text.toString(),weightKgView.text.toString(),resultBmiView.text.toString(),commentView.text.toString())
+
             editor.apply {
                 if (heightCmDbl <= 0 && weightKgDbl <= 0) {
                     Toast.makeText(context, "BMI計算結果がありません", Toast.LENGTH_LONG).show()
                 } else {
-
-//                    val savedHistory = dataStore.getString("History","[]")
-//                    val splitHistory = savedHistory.split("]")
-//                    var history = splitHistory[0]
-//                        if (history == "["){
-//                            editor.putString("History","${history}{${today},${heightCmView.text},${weightKgView.text},${resultBmiView.text},${commentView.text}}]")
-//                        }else {
-//                            editor.putString("History","${history},{${today},${heightCmView.text},${weightKgView.text},${resultBmiView.text},${commentView.text}}]")
-//                        }
+                    val personalData = PersonalDataModel(day,heightCmView.text.toString(),weightKgView.text.toString(),resultBmiView.text.toString(),commentView.text.toString())
+                    val savedData = dataStore.getString("History", "[]")
+                    val savedDataList : List<PersonalDataModel>  = listAdapter.fromJson(savedData) as  List<PersonalDataModel>
+                    savedDataList.add(personalData)
+                    val json = listAdapter.toJson(savedDataList)
+                    editor.putString("History",json)
                     Toast.makeText(context, "保存しました", Toast.LENGTH_LONG).show()
                 }
                 editor.apply()
