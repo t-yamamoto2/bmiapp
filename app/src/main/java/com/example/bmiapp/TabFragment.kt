@@ -80,6 +80,7 @@ class TabMainFragment: Fragment() {
                     val personalData = PersonalDataModel(day,heightCmView.text.toString(),weightKgView.text.toString(),resultBmiView.text.toString(),commentView.text.toString())
                     val savedData = dataStore.getString("History", "[]")
                     val savedDataList : List<PersonalDataModel>  = listAdapter.fromJson(savedData) as  List<PersonalDataModel>
+                    //保存済みのjsonに計算結果オブジェクトを追加
                     savedDataList.add(personalData)
                     val json = listAdapter.toJson(savedDataList)
                     editor.putString("History",json)
