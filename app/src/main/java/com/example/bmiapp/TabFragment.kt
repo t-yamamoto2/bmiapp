@@ -19,16 +19,20 @@ import java.util.*
 import java.util.List
 import android.support.v7.widget.LinearLayoutManager
 
-
-
-
 val moshi = Moshi.Builder().build()
 val type = Types.newParameterizedType(List::class.java,PersonalDataModel::class.java)
 val listAdapter:JsonAdapter<List<PersonalDataModel>> = moshi.adapter(type)
+
+//計算タブ
 class TabMainFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         val view = inflater.inflate(R.layout.fragment_main, container, false)
+        return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //計算処理
         val resultBmiView: TextView = view.findViewById(R.id.result)
@@ -93,9 +97,7 @@ class TabMainFragment: Fragment() {
                 editor.apply()
             }
         }
-        return view
     }
-
     private fun toDoubleOrNegative(text: String): Double {
         var result: Double
         try {
@@ -106,26 +108,28 @@ class TabMainFragment: Fragment() {
         return result
     }
 }
+
+//履歴タブ
 class TabHistryFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        val view = inflater.inflate(R.layout.fragment_main, container, false)
-        val rv : RecyclerView = view.findViewById(R.id.recycler_view)
-
-        val dataStore: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context)
-        val savedData = dataStore.getString("History", "[]")
-        val savedDataList : List<PersonalDataModel>  = listAdapter.fromJson(savedData) as  List<PersonalDataModel>
-
-        val adapter = ViewAdapter(savedDataList)
-
-        val llm = LinearLayoutManager(this.context)
-
-        rv.setHasFixedSize(true);
-
-        rv.setLayoutManager(llm);
-
-        rv.setAdapter(adapter);
-
+        val view = inflater.inflate(R.layout.fragment_history, container, false)
         return view
+    }
+
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+         val rv : RecyclerView? = view.findViewById(R.id.recycler_view)
+
+         val dataStore: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.context)
+         val savedData = dataStore.getString("History", "[]")
+         val savedDataList : List<PersonalDataModel>  = listAdapter.fromJson(savedData) as  List<PersonalDataModel>
+
+         val adapter = ViewAdapter(savedDataList)
+         val llm = LinearLayoutManager(this.context)
+
+         rv?.setHasFixedSize(true);
+         rv?.setLayoutManager(llm);
+         rv?.setAdapter(adapter);
     }
 }
