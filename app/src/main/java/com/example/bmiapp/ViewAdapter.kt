@@ -5,9 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import java.util.List
-import android.support.v4.view.ViewPager
-import android.util.Log
-
 
 class ViewAdapter(private val list: List<PersonalDataModel>) : RecyclerView.Adapter<ViewHolder>() {
 
@@ -26,5 +23,11 @@ class ViewAdapter(private val list: List<PersonalDataModel>) : RecyclerView.Adap
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun refresh(newList: List<PersonalDataModel>) {
+        list.clear()
+        list.addAll(newList)
+        notifyDataSetChanged()
     }
 }
