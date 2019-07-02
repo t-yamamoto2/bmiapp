@@ -1,7 +1,6 @@
 package com.example.bmiapp
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,28 +10,16 @@ import java.util.List
 class ViewAdapter(private val list: List<PersonalDataModel>) : RecyclerView.Adapter<ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        Log.d("Adapter", "onCreateViewHolder")
         val rowView: View = LayoutInflater.from(parent.context).inflate(R.layout.list_item, parent, false)
         return ViewHolder(rowView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        Log.d("Adapter", "onBindViewHolder")
-        holder.titleView.text = list[position].date
-        holder.detailView.text = list[position].bmi
-//        holder.itemView.setOnClickListener {
-//            listener.onClickRow(it, list[position])
-//        }
+        holder.titleView.text = list.get(position).date
+        holder.detailView.text = list.get(position).bmi
     }
 
     override fun getItemCount(): Int {
-        Log.d("Adapter", "getItemCount")
         return list.size
-    }
-
-    interface ListListener {
-        fun onClickRow(tappedView: View, rowModel: PersonalDataModel){
-
-        }
     }
 }
