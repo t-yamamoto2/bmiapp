@@ -11,6 +11,10 @@ import android.widget.TextView
 import android.widget.Toast
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import java.text.SimpleDateFormat
 import com.squareup.moshi.*
 import java.util.*
@@ -19,6 +23,8 @@ import java.util.List
 val moshi = Moshi.Builder().build()
 val type = Types.newParameterizedType(List::class.java,PersonalDataModel::class.java)
 val listAdapter:JsonAdapter<List<PersonalDataModel>> = moshi.adapter(type)
+
+
 
 //計算タブ
 class TabMainFragment: Fragment() {
@@ -45,7 +51,6 @@ class TabMainFragment: Fragment() {
 
             val heightCmDbl = toDoubleOrNegative(heightCmStr)
             val weightKgDbl = toDoubleOrNegative(weightKgStr)
-
 
             if (heightCmDbl <= 0 || weightKgDbl <= 0) {
                 Toast.makeText(this.context, "身長と体重に正しい数値を入力してください", Toast.LENGTH_LONG).show()
@@ -104,5 +109,8 @@ class TabMainFragment: Fragment() {
         }
         return result
     }
+
 }
+
+
 
