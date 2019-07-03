@@ -10,7 +10,7 @@ class TabAdapter(fm:FragmentManager, private val context: Context): FragmentPage
     override fun getItem(position: Int): Fragment {
         when(position){
             0 -> { return TabMainFragment() }
-            else ->  { return TabHistryFragment() }
+            else ->  { return TabHistoryFragment() }
         }
     }
 
